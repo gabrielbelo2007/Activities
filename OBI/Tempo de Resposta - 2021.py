@@ -4,7 +4,10 @@ dict_registros = {}
 tempo_total = 0
 tempo_amigo = 0
 
-#  copia_registros = ""
+contador = 0
+contador1 = 2
+copia_registros = []
+copia_registros_num = []
 
 amigos_recebidos = []
 amigos_enviados = []
@@ -14,7 +17,8 @@ amigos_nao_respondidos = set()
 
 while numero_registros > 0:
     registro = input()
-#   copia_registros += registro + ","
+    copia_registros += [registro]
+    copia_registros_num += registro
     numero_registros -= 1
 
     chave, valor = registro.split()
@@ -27,55 +31,75 @@ while numero_registros > 0:
 for chave in dict_registros:  # Salva oq recebeu, oq enviou e o tempo
 
     if chave == "R":
-        for valor in dict_registros[chave]:
-            amigos_recebidos.append(valor)
+        for recebido in dict_registros[chave]:
+            amigos_recebidos.append(recebido)
 
     elif chave == "E":
-        for valor in dict_registros[chave]:
-            amigos_enviados.append(valor)
+        for enviado in dict_registros[chave]:
+            amigos_enviados.append(enviado)
 
     else:
-        for valor in dict_registros[chave]:
-            tempo_total += valor
+        for tempo in dict_registros[chave]:
+            tempo_total += tempo
+
+amigos_recebidos.sort()
+amigos_enviados.sort()
 
 if len(amigos_recebidos) != len(amigos_enviados):  # Verifica se respondeu tudo q recebeu
-    contador = 0
+    indice = 0
 
     for valor in amigos_recebidos:
-        if valor in amigos_enviados and contador < len(amigos_enviados):
-            amigos_enviados[contador] = amigos_enviados[contador] + 1
+        if valor in amigos_enviados and indice < len(amigos_enviados):
+            amigos_enviados[indice] = amigos_enviados[indice] + 1
             amigos_respondidos.add(valor)
-            contador += 1
+            indice += 1
         else:
             amigos_respondidos.remove(valor)
             amigos_nao_respondidos.add(valor)
-            contador += 1
+            indice += 1
+else:
+    amigos_respondidos = amigos_recebidos
 
+
+
+x = 0
+teste = []
+z = copia_registros
+while x < 1:
+    numero_E = str(copia_registros_num[contador1])
+    tamanho_registro = len(copia_registros[0])
+
+    if tamanho_registro > 3:
+        contador1 += 1
+        numero_E += str(copia_registros_num[contador1])
+        contador1 += 3
+    else:
+        contador1 += 3
+
+    f = "E " + numero_E
+    descontar_T = copia_registros_num.count("T")
+
+    for valor in copia_registros:
+        while valor != f:
+            tempo_amigo += 1
+            break
+        else:
+            if len(copia_registros) > 1:
+                copia_registros.pop(0)
+            tempo_amigo -= descontar_T
+            tempo_amigo += tempo_total
+    else:
+        for amigo in amigos_recebidos:
+            teste += amigo, tempo_amigo
+            tempo_amigo = 0
+
+if contador > len(z):
+    x += 1
+
+
+"""
 print(dict_registros)
 print(tempo_total)
 print(amigos_recebidos, amigos_enviados)
 print(amigos_respondidos, amigos_nao_respondidos)
-
-for valor in amigos_recebidos:
-    print(valor, tempo_amigo)
-
-
-"""
-copia_registros = copia_registros.split(",")
-copia_registros.pop()
-print(copia_registros)
-
-for valor in copia_registros:  # R 3
-    if valor == "R" or "E":
-        x = valor  # R 3
-        copia_registros.remove(valor)  # registros sem R 3
-        len(valor)
-        if len == 3:
-            for valor1 in copia_registros:
-                if valor1 == "E" and x[2]:
-                    print()
-                else:
-                    tempo_amigo += 1
-            
-# Vai remover todos os valores R, então é problema se ela enviar mais de uma mensagem
 """
